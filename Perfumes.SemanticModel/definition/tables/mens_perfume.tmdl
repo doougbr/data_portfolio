@@ -1,0 +1,113 @@
+table mens_perfume
+	lineageTag: 191a740f-fad9-429c-8590-f80cbbc1cb87
+
+	column brand
+		dataType: string
+		lineageTag: bc2bb77b-0857-4623-8088-88ae59faeb1c
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: f250da30-00f4-4e63-b8e7-dd8dc274d22f
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: bd8f19e6-486a-484b-b6ed-0ffe230cf1d7
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		lineageTag: d4e6e920-8c06-406a-8885-a91295aa8669
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column priceWithCurrency
+		dataType: string
+		lineageTag: d8781b60-f421-438b-9594-495dd2f99ee9
+		summarizeBy: none
+		sourceColumn: priceWithCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column available
+		dataType: double
+		lineageTag: afe70851-0af6-4c6c-9b42-752a938de3e5
+		summarizeBy: sum
+		sourceColumn: available
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column availableText
+		dataType: string
+		lineageTag: 672c82fb-ebe2-4fda-83b3-253a0b3e3139
+		summarizeBy: none
+		sourceColumn: availableText
+
+		annotation SummarizationSetBy = Automatic
+
+	column sold
+		dataType: double
+		lineageTag: 4192ca7e-6b4a-4c88-a25c-734dc5cd2efe
+		summarizeBy: sum
+		sourceColumn: sold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column lastUpdated
+		dataType: string
+		lineageTag: 2daa688d-e677-4eea-8206-1d1c8323e306
+		summarizeBy: none
+		sourceColumn: lastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+	column itemLocation
+		dataType: string
+		lineageTag: 612a1652-439e-4655-b13f-a7938b1e4e77
+		summarizeBy: none
+		sourceColumn: itemLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: 18c4092f-e3ca-4264-972e-df8569c9901b
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mens_perfume = m
+		mode: import
+		source =
+				let
+				    Fonte = GoogleBigQuery.Database(),
+				    #"exalted-breaker-455520-m1" = Fonte{[Name="exalted-breaker-455520-m1"]}[Data],
+				    perfume_Schema = #"exalted-breaker-455520-m1"{[Name="perfume",Kind="Schema"]}[Data],
+				    mens_perfume_Table = perfume_Schema{[Name="mens_perfume",Kind="Table"]}[Data],
+				    #"Personalização Adicionada" = Table.AddColumn(mens_perfume_Table, "genre", each "Mens")
+				in
+				    #"Personalização Adicionada"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

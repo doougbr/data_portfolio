@@ -1,0 +1,174 @@
+table merged_base
+	lineageTag: 8bffcfd1-e442-402d-bca8-54f8ed561b42
+
+	column brand
+		dataType: string
+		lineageTag: f7b79f96-e1fe-45bb-bb8e-58d43e2a8c54
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: fc5dd57e-316b-4e96-a151-394dae12083e
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: 50971d3e-9d7c-481b-89af-c06820a08676
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: a5b16ad3-60ac-4e99-99d0-99376f9a7c14
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+	column priceWithCurrency
+		dataType: string
+		lineageTag: e3d18f7a-cf48-44f1-a5d1-60fb080bca7b
+		summarizeBy: none
+		sourceColumn: priceWithCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column available
+		dataType: double
+		lineageTag: 234be054-b88e-4c65-baad-599298db05d6
+		summarizeBy: sum
+		sourceColumn: available
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column availableText
+		dataType: string
+		lineageTag: 2e5acfe7-2a55-4011-9d36-13353d26fefa
+		summarizeBy: none
+		sourceColumn: availableText
+
+		annotation SummarizationSetBy = Automatic
+
+	column sold
+		dataType: int64
+		formatString: #,0
+		lineageTag: 9a16d521-15e9-4210-87bc-aaf2b14bc652
+		summarizeBy: sum
+		sourceColumn: sold
+
+		annotation SummarizationSetBy = Automatic
+
+	column lastUpdated
+		dataType: string
+		lineageTag: b8bbec04-a7ae-4f10-ba18-8f0fd82a6857
+		summarizeBy: none
+		sourceColumn: lastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+	column total = merged_base[price]*merged_base[sold]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 5ec35032-c044-46f7-9716-a70974e12c65
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column link_url_brand =
+			
+			SWITCH(merged_base[brand],
+			"PRADA", "https://logospng.org/wp-content/uploads/prada.png",
+			"Calvin Klein", "https://logopng.com.br/logos/calvin-klein-22.png")
+		lineageTag: 209ed6d6-5c7c-4700-9bb8-3664a7cf4f1b
+		dataCategory: ImageUrl
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column link_url_perfume =
+			
+			SWITCH(merged_base[title],
+			"PRADA", "https://logospng.org/wp-content/uploads/prada.png",
+			"Ck One by Calvin Klein Cologne Perfume Unisex 3.4 oz New In Box", "https://shopluxo.vtexassets.com/arquivos/ids/175057/CK-ONE.jpg")
+		lineageTag: 4f3d8d0e-1f5a-4cca-b467-50be8ef72437
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 4d712f04-2d22-4c0b-b4fb-367177e8b07c
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 40e41861-3595-4027-91aa-682a55e6790c
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 893829b0-6de0-4593-a67f-9d9a2a037b8a
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: 61610376-3956-4b9a-88e4-c308b9f446bf
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	partition merged_base = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.Combine({womens_perfume, mens_perfume}),
+				    #"Valor Substituído" = Table.ReplaceValue(Fonte,"~ ","",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído1" = Table.ReplaceValue(#"Valor Substituído"," ~","",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído2" = Table.ReplaceValue(#"Valor Substituído1","^","",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído3" = Table.ReplaceValue(#"Valor Substituído2","ysl","YSL",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído4" = Table.ReplaceValue(#"Valor Substituído3","Hermes","HERMÈS",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído5" = Table.ReplaceValue(#"Valor Substituído4","As Show","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído6" = Table.ReplaceValue(#"Valor Substituído5","AS SHOWN","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído7" = Table.ReplaceValue(#"Valor Substituído6","AS SHOW","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído8" = Table.ReplaceValue(#"Valor Substituído7","AS  SHOWN","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído9" = Table.ReplaceValue(#"Valor Substituído8","As Picture Show","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído10" = Table.ReplaceValue(#"Valor Substituído9","as showed","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído11" = Table.ReplaceValue(#"Valor Substituído10","Undefinedn","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Valor Substituído11",{{"sold", Int64.Type}}),
+				    #"Valor Substituído12" = Table.ReplaceValue(#"Tipo Alterado","Assorted","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído13" = Table.ReplaceValue(#"Valor Substituído12","As picture show","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído14" = Table.ReplaceValue(#"Valor Substituído13","AS PICTURE SHOWN","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Valor Substituído15" = Table.ReplaceValue(#"Valor Substituído14","As shown","Undefined",Replacer.ReplaceText,{"brand"}),
+				    #"Linhas Filtradas" = Table.SelectRows(#"Valor Substituído15", each [brand] <> null and [brand] <> ""),
+				    #"Dividir Coluna por Delimitador" = Table.SplitColumn(#"Linhas Filtradas", "itemLocation", Splitter.SplitTextByDelimiter(",", QuoteStyle.Csv), {"itemLocation.1", "itemLocation.2", "itemLocation.3", "itemLocation.4"}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Dividir Coluna por Delimitador",{{"itemLocation.1", "city"}, {"itemLocation.2", "state"}, {"itemLocation.3", "country"}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Colunas Renomeadas",{"itemLocation.4"}),
+				    #"Linhas Filtradas1" = Table.SelectRows(#"Colunas Removidas", each [country] <> null and [country] <> ""),
+				    #"Linhas Filtradas2" = Table.SelectRows(#"Linhas Filtradas1", each [sold] <> null and [sold] <> "")
+				in
+				    #"Linhas Filtradas2"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

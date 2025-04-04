@@ -1,0 +1,113 @@
+table womens_perfume
+	lineageTag: 97187565-9462-4e9d-afc7-76c3fd059250
+
+	column brand
+		dataType: string
+		lineageTag: 54fe6629-c48f-4c6f-851c-d237a7254923
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: 7e1a5786-8775-4b39-a668-253e62959c25
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: e6b46373-69f7-41a5-b1f6-5956da11b794
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		lineageTag: dc622814-4e0c-43f2-9ba2-fe9b01eaf0cb
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column priceWithCurrency
+		dataType: string
+		lineageTag: a1338173-e0fa-4bbf-a3f7-c4299eb9dfbb
+		summarizeBy: none
+		sourceColumn: priceWithCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column available
+		dataType: int64
+		formatString: 0
+		lineageTag: a385e2ce-a02d-4c72-8082-7214b91c1384
+		summarizeBy: sum
+		sourceColumn: available
+
+		annotation SummarizationSetBy = Automatic
+
+	column availableText
+		dataType: string
+		lineageTag: a0d0e0e8-8317-4bba-b34e-c85a6f33a4f7
+		summarizeBy: none
+		sourceColumn: availableText
+
+		annotation SummarizationSetBy = Automatic
+
+	column sold
+		dataType: int64
+		formatString: 0
+		lineageTag: c5f57d88-8401-4d67-8f44-d0dc0c889faf
+		summarizeBy: sum
+		sourceColumn: sold
+
+		annotation SummarizationSetBy = Automatic
+
+	column lastUpdated
+		dataType: string
+		lineageTag: 87bf739c-1596-479d-a318-0e9b49332b27
+		summarizeBy: none
+		sourceColumn: lastUpdated
+
+		annotation SummarizationSetBy = Automatic
+
+	column itemLocation
+		dataType: string
+		lineageTag: ff8f7aa8-78f8-43cc-a599-d4131ee6b174
+		summarizeBy: none
+		sourceColumn: itemLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: 30616d69-5417-4531-b528-ca2e3eda5d8e
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	partition womens_perfume = m
+		mode: import
+		source =
+				let
+				    Fonte = GoogleBigQuery.Database(),
+				    #"exalted-breaker-455520-m1" = Fonte{[Name="exalted-breaker-455520-m1"]}[Data],
+				    perfume_Schema = #"exalted-breaker-455520-m1"{[Name="perfume",Kind="Schema"]}[Data],
+				    womens_perfume_Table = perfume_Schema{[Name="womens_perfume",Kind="Table"]}[Data],
+				    #"Colunas Renomeadas" = Table.RenameColumns(womens_perfume_Table,{{"_brand_", "brand"}}),
+				    #"Personalização Adicionada" = Table.AddColumn(#"Colunas Renomeadas", "Genre", each "Womens"),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Personalização Adicionada",{{"Genre", "genre"}})
+				in
+				    #"Colunas Renomeadas1"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
