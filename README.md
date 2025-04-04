@@ -44,7 +44,8 @@ The goal is to extract valuable insights from the dataset and present them in an
 
 ## 📊 Dashboard Preview
 
-> *(Insert screenshot or GIF of the dashboard here)*
+![image](https://github.com/user-attachments/assets/d13a2807-3a8b-409d-8bff-d9181e9ff13e)
+
 
 Key Features:
 - Filter by location, brand, or price range
@@ -59,21 +60,6 @@ Key Features:
 - Listings from **Europe** were priced higher than those from **North America**.
 - Most common cities for perfume listings were **[City A, City B, City C]**.
 - Parquet files reduced data size by **~X%** compared to CSV format.
-
----
-
-## 🗂️ Project Structure
-
-```
-perfume-analysis/
-│
-├── data/                   # Raw and transformed datasets
-├── notebooks/              # Jupyter notebooks (optional)
-├── scripts/                # Python scripts for ETL
-├── dashboard/              # Power BI report files
-├── README.md               # Project documentation
-└── requirements.txt        # Python dependencies
-```
 
 ---
 
